@@ -163,11 +163,11 @@ const populateBotResponse = async (userMessage) => {
     `<div class='message-line'><div class='message-box${
       !lightMode ? " dark" : ""
     }'>${
-      response.watsonxResponseText
-    }</div><button id='${repeatButtonID}' class='btn volume repeat-button' onclick='playResponseAudio("data:audio/wav;base64," + responses[botRepeatButtonIDToIndexMap[this.id]].watsonxResponseSpeech);console.log(this.id)'><i class='fa fa-volume-up'></i></button></div>`
+      response.ollamaResponseText
+    }</div><button id='${repeatButtonID}' class='btn volume repeat-button' onclick='playResponseAudio("data:audio/wav;base64," + responses[botRepeatButtonIDToIndexMap[this.id]].ollamaResponseSpeech);console.log(this.id)'><i class='fa fa-volume-up'></i></button></div>`
   );
 
-  playResponseAudio("data:audio/wav;base64," + response.watsonxResponseSpeech);
+  playResponseAudio("data:audio/wav;base64," + response.ollamaResponseSpeech);
 
   scrollToBottom();
 };
@@ -239,7 +239,7 @@ $(document).ready(function () {
     lightMode = !lightMode;
   });
 
-  $("#voice-options").change(function () {
+  $("#voice").change(function () {
     voiceOption = $(this).val();
     console.log(voiceOption);
   });
