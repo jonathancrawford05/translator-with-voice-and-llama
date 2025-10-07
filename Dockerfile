@@ -14,10 +14,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Pre-download Whisper model during build (optional but highly recommended)
 # This prevents the 10-30 second delay on first request
+# Using multilingual model for both English and Russian support
 RUN python -c "from transformers import pipeline; \
-    print('Pre-downloading Whisper model...'); \
-    pipeline('automatic-speech-recognition', model='openai/whisper-tiny.en'); \
-    print('Whisper model cached successfully')"
+    print('Pre-downloading Whisper multilingual model...'); \
+    pipeline('automatic-speech-recognition', model='openai/whisper-tiny'); \
+    print('Whisper multilingual model cached successfully')"
 
 # Copy application code
 COPY . .

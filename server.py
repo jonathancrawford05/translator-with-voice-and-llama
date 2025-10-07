@@ -17,8 +17,13 @@ def index():
 @app.route('/speech-to-text', methods=['POST'])
 def speech_to_text_route():
     print("processing speech-to-text")
+    
+    # Get translation direction from query parameter (default to en-ru)
+    direction = request.args.get('direction', 'en-ru')
+    print(f'STT direction: {direction}')
+    
     audio_binary = request.data # Get the user's speech from their request
-    text = speech_to_text(audio_binary) # Call speech_to_text function to transcribe the speech
+    text = speech_to_text(audio_binary, direction) # Call speech_to_text function with direction
 
     # Return the response back to the user in JSON format
     response = app.response_class(
@@ -38,20 +43,24 @@ def process_message_route():
 
     voice = request.json['voice'] # Get user's preferred voice from their request
     print('voice', voice)
+    
+    # Get translation direction from request (default to en-ru if not provided)
+    direction = request.json.get('direction', 'en-ru')
+    print('direction', direction)
 
-    # Call llama_process_message function to process the user's message and get a response back
-    llm_response_text = llama_process_message(user_message)
+    # Call llama_process_message function to translate the user's message
+    llm_response_text = llama_process_message(user_message, direction)
 
-    # Clean the response to remove any emptylines
+    # Clean the response to remove any empty lines
     llm_response_text = os.linesep.join([s for s in llm_response_text.splitlines() if s])
 
-    # Call our text_to_speech function to convert LLM's reponse to speech
-    llm_response_speech = text_to_speech(llm_response_text, voice)
+    # Call our text_to_speech function to convert translation to speech
+    llm_response_speech = text_to_speech(llm_response_text, voice, direction)
 
     # convert llm_response_speech to base64 string so it can be sent back in the JSON response
     llm_response_speech = base64.b64encode(llm_response_speech).decode('utf-8')
 
-    # Send a JSON response back to the user containing their message's response both in text and speech formats
+    # Send a JSON response back to the user containing translation in text and speech formats
     response = app.response_class(
         response=json.dumps({"ollamaResponseText": llm_response_text, "ollamaResponseSpeech": llm_response_speech}),
         status=200,

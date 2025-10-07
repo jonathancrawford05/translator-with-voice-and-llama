@@ -2,6 +2,7 @@ let lightMode = true;
 let recorder = null;
 let recording = false;
 let voiceOption = "default";
+let translationDirection = "en-ru";
 const responses = [];
 const botRepeatButtonIDToIndexMap = {};
 const userRepeatButtonIDToRecordingMap = {};
@@ -26,7 +27,8 @@ function hideUserLoadingAnimation() {
 }
 
 const getSpeechToText = async (userRecording) => {
-  let response = await fetch(baseUrl + "/speech-to-text", {
+  // Include direction as query parameter for language-specific transcription
+  let response = await fetch(baseUrl + "/speech-to-text?direction=" + translationDirection, {
     method: "POST",
     body: userRecording.audioBlob,
   });
@@ -40,7 +42,7 @@ const processUserMessage = async (userMessage) => {
   let response = await fetch(baseUrl + "/process-message", {
     method: "POST",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
-    body: JSON.stringify({ userMessage: userMessage, voice: voiceOption }),
+    body: JSON.stringify({ userMessage: userMessage, voice: voiceOption, direction: translationDirection }),
   });
   response = await response.json();
   console.log(response);
@@ -241,6 +243,18 @@ $(document).ready(function () {
 
   $("#voice").change(function () {
     voiceOption = $(this).val();
-    console.log(voiceOption);
+    console.log("Voice changed to:", voiceOption);
+  });
+
+  $("#translation-direction").change(function () {
+    translationDirection = $(this).val();
+    console.log("Translation direction changed to:", translationDirection);
+    
+    // Update placeholder text based on direction
+    if (translationDirection === "en-ru") {
+      $("#message-input").attr("placeholder", "Type in English...");
+    } else {
+      $("#message-input").attr("placeholder", "Введите на русском языке...");
+    }
   });
 });

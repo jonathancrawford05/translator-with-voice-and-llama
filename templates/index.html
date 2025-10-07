@@ -20,19 +20,17 @@
     <div class="container h-700">
       <div class="row">
         <div class="col-12" style="margin-top: 2rem">
-          <h1 class="text-center">Voice Assistant</h1>
+          <h1 class="text-center">Voice Translator</h1>
           <p class="text-center" style="font-size: 20px">
-            Your personal assistant powered by Llama3.2 model hosted on ollama and 
-            Google's Text-to-Speech and Whisper for Speech-to-Text
+            Bidirectional translation powered by Llama3.2, Whisper (multilingual), and Google Text-to-Speech
           </p>
         </div>
         <div class="col-12" style="font-size: 16px">
           <p class="text-center mb-4">
-            Try asking: What can you specifically do? Type in your question or
-            record it by clicking the microphone!
+            Select your translation direction, then type or record your message!
           </p>
         </div>
-        <div class="col-12 text-center d-flex justify-content-around">
+        <div class="col-12 text-center d-flex justify-content-around flex-wrap">
           <div class="custom-control custom-switch mb-3 d-inline-block">
             <input
               type="checkbox"
@@ -43,9 +41,18 @@
               >Toggle light/dark mode</label
             >
           </div>
-          <div class="d-inline-block">
+          <div class="d-inline-block mb-3">
+            <label class="voice-options-label" for="translation-direction"
+              >Translation Direction</label
+            >
+            <select id="translation-direction" style="font-weight: bold;">
+              <option value="en-ru">🇺🇸 English → 🇷🇺 Russian</option>
+              <option value="ru-en">🇷🇺 Russian → 🇺🇸 English</option>
+            </select>
+          </div>
+          <div class="d-inline-block mb-3">
             <label class="voice-options-label" for="voice"
-              >Choose a Voice</label
+              >Voice Accent</label
             >
             <select id="voice">
               <option value="com">English (US)</option>
@@ -82,7 +89,6 @@
               placeholder="Type your message here..."
             />
             <div class="input-group-append">
-              <!-- <button id="send-button" class="btn btn-primary">Send</button> -->
               <button id="send-button" class="btn btn-primary microphone">
                 <i class="fa fa-microphone"></i>
               </button>
@@ -93,4 +99,3 @@
     </div>
   </body>
 </html>
- 
